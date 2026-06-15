@@ -123,7 +123,6 @@ public class Beranda extends javax.swing.JFrame {
 
     private void btnBeratActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBeratActionPerformed
         // TODO add your handling code here:
-        new CekBeratBadan().setVisible(true);
     }//GEN-LAST:event_btnBeratActionPerformed
 
     /**
