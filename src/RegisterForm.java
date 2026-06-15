@@ -5,8 +5,12 @@
 
 /**
  *
- * @author Acer
+ * @author Hilmi, Faizah, dan Desta
  */
+import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 public class RegisterForm extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegisterForm.class.getName());
@@ -18,6 +22,7 @@ public class RegisterForm extends javax.swing.JFrame {
         initComponents();
         setResizable(false);
         setSize(1062, 574);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -29,11 +34,12 @@ public class RegisterForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        lblEmail = new javax.swing.JLabel();
+        txtEmail = new javax.swing.JTextField();
+        lblKataSandi = new javax.swing.JLabel();
+        txtKataSandi = new javax.swing.JPasswordField();
+        chkTampilkanKataSandi = new javax.swing.JCheckBox();
+        btnRegis = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
@@ -41,41 +47,102 @@ public class RegisterForm extends javax.swing.JFrame {
         setTitle("Register");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Email");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 220, -1, -1));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 260, 270, 40));
+        lblEmail.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        lblEmail.setForeground(new java.awt.Color(255, 255, 255));
+        lblEmail.setText("Email");
+        getContentPane().add(lblEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 220, -1, -1));
+        getContentPane().add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 260, 270, 40));
 
-        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Kata Sandi");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 320, -1, -1));
+        lblKataSandi.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        lblKataSandi.setForeground(new java.awt.Color(255, 255, 255));
+        lblKataSandi.setText("Kata Sandi");
+        getContentPane().add(lblKataSandi, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 320, -1, -1));
+        getContentPane().add(txtKataSandi, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 360, 270, 40));
 
-        jPasswordField1.setText("jPasswordField1");
-        getContentPane().add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 360, 270, 40));
+        chkTampilkanKataSandi.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        chkTampilkanKataSandi.setForeground(new java.awt.Color(255, 255, 255));
+        chkTampilkanKataSandi.setText("Tampilkan kata sandi");
+        chkTampilkanKataSandi.addActionListener(this::chkTampilkanKataSandiActionPerformed);
+        getContentPane().add(chkTampilkanKataSandi, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 400, 190, -1));
 
-        jCheckBox1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jCheckBox1.setForeground(new java.awt.Color(255, 255, 255));
-        jCheckBox1.setText("Tampilkan kata sandi");
-        jCheckBox1.addActionListener(this::jCheckBox1ActionPerformed);
-        getContentPane().add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 400, 190, -1));
+        btnRegis.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnRegis.setForeground(new java.awt.Color(0, 0, 204));
+        btnRegis.setText("Register");
+        btnRegis.addActionListener(this::btnRegisActionPerformed);
+        getContentPane().add(btnRegis, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 440, 270, 40));
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 0, 204));
-        jButton1.setText("Register");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 470, 270, 40));
+        jButton1.setFont(new java.awt.Font("Sans Serif Collection", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Sudah punya akun? Login");
+        jButton1.setBorderPainted(false);
+        jButton1.setContentAreaFilled(false);
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 490, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgRegis.png"))); // NOI18N
-        jLabel1.setPreferredSize(new java.awt.Dimension(1062, 574));
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1060, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+    private void chkTampilkanKataSandiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkTampilkanKataSandiActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+        if (chkTampilkanKataSandi.isSelected()) {
+             txtKataSandi.setEchoChar((char) 0);
+         } else {
+             txtKataSandi.setEchoChar('•');
+         }
+    }//GEN-LAST:event_chkTampilkanKataSandiActionPerformed
+
+    private void btnRegisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisActionPerformed
+        // TODO add your handling code here:
+        String email = txtEmail.getText().trim();
+         String sandi = new String(txtKataSandi.getPassword());
+         // Validasi tidak boleh kosong
+         if (email.isEmpty() || sandi.isEmpty()) {
+             JOptionPane.showMessageDialog(this, "Email dan Kata Sandi tidak boleh kosong!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+             return;
+         }
+         // Validasi format email sederhana
+         if (!email.contains("@") || !email.contains(".")) {
+             JOptionPane.showMessageDialog(this, "Masukkan alamat email yang valid!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+             return;
+         }
+         // Simpan ke database
+         try {
+             Connection conn = Koneksi.bukaKoneksi();
+             if (conn == null) {
+                 JOptionPane.showMessageDialog(this, "Koneksi database gagal!", "Error", JOptionPane.ERROR_MESSAGE);
+                 return;
+             }
+             // Cek apakah email sudah terdaftar
+             String cekEmail = "SELECT * FROM pengguna WHERE email = ?";
+             PreparedStatement psCek = conn.prepareStatement(cekEmail);
+             psCek.setString(1, email);
+             if (psCek.executeQuery().next()) {
+                 JOptionPane.showMessageDialog(this, "Email sudah digunakan! Gunakan email lain.", "Gagal", JOptionPane.WARNING_MESSAGE);
+                 return;
+             }
+             // Simpan data baru
+             String sql = "INSERT INTO pengguna (email, kata_sandi) VALUES (?, ?)";
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ps.setString(1, email);
+             ps.setString(2, sandi);
+             ps.executeUpdate();
+             JOptionPane.showMessageDialog(this, "Registrasi Berhasil! Silakan login.");
+             // Buka halaman Login
+             new LoginForm().setVisible(true);
+             this.dispose();
+         } catch (SQLException e) {
+             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Kesalahan", JOptionPane.ERROR_MESSAGE);
+         }
+    }//GEN-LAST:event_btnRegisActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        new LoginForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -103,12 +170,13 @@ public class RegisterForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRegis;
+    private javax.swing.JCheckBox chkTampilkanKataSandi;
     private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblKataSandi;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JPasswordField txtKataSandi;
     // End of variables declaration//GEN-END:variables
 }

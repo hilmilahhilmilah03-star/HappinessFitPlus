@@ -5,19 +5,20 @@
 
 /**
  *
- * @author Acer
+ * @author Hilmi, Faizah, dan Desta
  */
 public class Beranda extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Beranda.class.getName());
 
     /**
-     * Creates new form Beranda
+     * Creates new form
      */
     public Beranda() {
         initComponents();
         setResizable(false);
         setSize(1062, 574);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -34,14 +35,14 @@ public class Beranda extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnBerat = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        btnAir = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        btnKalori = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -70,9 +71,10 @@ public class Beranda extends javax.swing.JFrame {
         jLabel6.setText("Kamu!");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 350, -1, -1));
 
-        jButton1.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jButton1.setText("Mulai");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 410, 140, 30));
+        btnBerat.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnBerat.setText("Mulai");
+        btnBerat.addActionListener(this::btnBeratActionPerformed);
+        getContentPane().add(btnBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 410, 140, 30));
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -89,9 +91,9 @@ public class Beranda extends javax.swing.JFrame {
         jLabel9.setText("Air Kamu?");
         getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 340, -1, -1));
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton2.setText("Mulai\n");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 390, 130, 30));
+        btnAir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAir.setText("Mulai\n");
+        getContentPane().add(btnAir, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 390, 130, 30));
 
         jLabel10.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -103,10 +105,10 @@ public class Beranda extends javax.swing.JFrame {
         jLabel11.setText("Yang Dibutuhkan!");
         getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 292, -1, 40));
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton3.setText("Mulai");
-        jButton3.addActionListener(this::jButton3ActionPerformed);
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 340, 110, 30));
+        btnKalori.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnKalori.setText("Mulai");
+        btnKalori.addActionListener(this::btnKaloriActionPerformed);
+        getContentPane().add(btnKalori, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 340, 110, 30));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgBeranda.png"))); // NOI18N
         jLabel1.setText("\n");
@@ -115,9 +117,14 @@ public class Beranda extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnKaloriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKaloriActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnKaloriActionPerformed
+
+    private void btnBeratActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBeratActionPerformed
+        // TODO add your handling code here:
+        new CekBeratBadan().setVisible(true);
+    }//GEN-LAST:event_btnBeratActionPerformed
 
     /**
      * @param args the command line arguments
@@ -145,9 +152,9 @@ public class Beranda extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnAir;
+    private javax.swing.JButton btnBerat;
+    private javax.swing.JButton btnKalori;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
