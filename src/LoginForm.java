@@ -83,7 +83,7 @@ public class LoginForm extends javax.swing.JFrame {
         btnRegis.setBorderPainted(false);
         btnRegis.setContentAreaFilled(false);
         btnRegis.addActionListener(this::btnRegisActionPerformed);
-        getContentPane().add(btnRegis, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 480, -1, -1));
+        getContentPane().add(btnRegis, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 470, -1, -1));
 
         lblBackground.setBackground(null);
         lblBackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgLogin.png"))); // NOI18N
