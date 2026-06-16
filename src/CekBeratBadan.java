@@ -5,8 +5,12 @@
 
 /**
  *
- * @author Acer
+ * @author Hilmi, Faizah, dan Desta
  */
+import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 public class CekBeratBadan extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CekBeratBadan.class.getName());
@@ -16,6 +20,9 @@ public class CekBeratBadan extends javax.swing.JFrame {
      */
     public CekBeratBadan() {
         initComponents();
+        setResizable(false);
+        setSize(1062, 574);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -28,15 +35,17 @@ public class CekBeratBadan extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        lblBerat = new javax.swing.JLabel();
+        txtBerat = new javax.swing.JTextField();
+        lblTinggi = new javax.swing.JLabel();
+        txtTinggi = new javax.swing.JTextField();
+        btnReset = new javax.swing.JButton();
+        btnCek = new javax.swing.JButton();
+        lblHasil = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1062, 574));
         setSize(new java.awt.Dimension(1062, 574));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -44,38 +53,133 @@ public class CekBeratBadan extends javax.swing.JFrame {
         jLabel2.setText("Cek Berat Badan Ideal");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 70, -1, -1));
 
-        jLabel3.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        jLabel3.setText("Berat Badan (Kg)");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 250, -1, -1));
+        lblBerat.setBackground(new java.awt.Color(0, 0, 0));
+        lblBerat.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        lblBerat.setText("Berat Badan (Kg)");
+        getContentPane().add(lblBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 250, -1, -1));
 
-        jTextField1.setBackground(new java.awt.Color(204, 255, 255));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, 190, 60));
+        txtBerat.setBackground(new java.awt.Color(204, 255, 255));
+        txtBerat.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        txtBerat.addActionListener(this::txtBeratActionPerformed);
+        getContentPane().add(txtBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 290, 190, 60));
 
-        jLabel4.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        jLabel4.setText("Tinggi Badan (Cm)");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 250, -1, -1));
+        lblTinggi.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        lblTinggi.setText("Tinggi Badan (Cm)");
+        getContentPane().add(lblTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 250, -1, -1));
 
-        jTextField2.setBackground(new java.awt.Color(255, 255, 204));
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 300, 200, 60));
+        txtTinggi.setBackground(new java.awt.Color(255, 255, 204));
+        txtTinggi.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        txtTinggi.addActionListener(this::txtTinggiActionPerformed);
+        getContentPane().add(txtTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 290, 210, 60));
 
-        jButton1.setBackground(new java.awt.Color(204, 0, 51));
-        jButton1.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Reset");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 400, 130, 40));
+        btnReset.setBackground(new java.awt.Color(204, 0, 51));
+        btnReset.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        btnReset.setForeground(new java.awt.Color(255, 255, 255));
+        btnReset.setText("Reset");
+        btnReset.addActionListener(this::btnResetActionPerformed);
+        getContentPane().add(btnReset, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 250, 150, 40));
 
-        jButton2.setBackground(new java.awt.Color(102, 255, 102));
-        jButton2.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Cek Sekarang");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 400, 150, 40));
+        btnCek.setBackground(new java.awt.Color(102, 255, 102));
+        btnCek.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        btnCek.setForeground(new java.awt.Color(255, 255, 255));
+        btnCek.setText("Cek Sekarang");
+        btnCek.addActionListener(this::btnCekActionPerformed);
+        getContentPane().add(btnCek, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 310, 150, 40));
+
+        lblHasil.setBackground(new java.awt.Color(204, 255, 204));
+        lblHasil.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
+        lblHasil.setForeground(new java.awt.Color(255, 255, 255));
+        lblHasil.setOpaque(true);
+        getContentPane().add(lblHasil, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 390, 650, 150));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgCekBerat(1).png"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, -40, 1070, 670));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 570));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtBeratActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBeratActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBeratActionPerformed
+
+    private void btnCekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCekActionPerformed
+        // TODO add your handling code here:
+         Connection conn = null;
+         PreparedStatement pst = null;
+         try {
+             // Ambil input
+             double berat = Double.parseDouble(txtBerat.getText().trim());
+             double tinggi = Double.parseDouble(txtTinggi.getText().trim());
+             if (berat <= 0 || tinggi <= 0) {
+                 JOptionPane.showMessageDialog(this, "Masukkan angka lebih dari 0!", "Input Salah", JOptionPane.WARNING_MESSAGE);
+                 return;
+             }
+             // 1. Hitung IMT
+             double tinggiMeter = tinggi / 100;
+             double imt = berat / (tinggiMeter * tinggiMeter);
+             // 2. Hitung Berat Ideal Rumus Broca
+             double beratIdeal = (tinggi - 100) - ((tinggi - 100) * 0.1);
+             // 3. Tentukan status & rekomendasi
+             String status, rekomendasi;
+             if (imt < 18.5) {
+                 status = "Kurus";
+                 rekomendasi = "Perbanyak asupan gizi dan makan teratur.";
+                 lblHasil.setBackground(new java.awt.Color(187, 222, 251));
+             } else if (imt <= 24.9) {
+                 status = "Berat Badan Ideal ✅";
+                 rekomendasi = "Pertahankan pola makan dan gaya hidup sehat.";
+                 lblHasil.setBackground(new java.awt.Color(200, 230, 201));
+             } else if (imt <= 29.9) {
+                 status = "Kelebihan Berat Badan ⚠️";
+                 rekomendasi = "Kurangi makanan berlemak dan perbanyak olahraga.";
+                 lblHasil.setBackground(new java.awt.Color(255, 224, 178));
+             } else {
+                 status = "Obesitas ❌";
+                 rekomendasi = "Atur pola makan dan rutin berolahraga, konsultasi ke dokter jika perlu.";
+                 lblHasil.setBackground(new java.awt.Color(255, 205, 210));
+             }
+             // Tampilkan hasil di layar
+             lblHasil.setText(String.format(
+                 "<html>Indeks Massa Tubuh = %.2f<br>Berat Ideal = %.1f Kg<br>%s<br>%s</html>",
+                 imt, beratIdeal, status, rekomendasi
+             ));
+             lblHasil.setOpaque(true);
+             // === SIMPAN KE DATABASE ===
+             conn = Koneksi.bukaKoneksi();
+             String sql = "INSERT INTO riwayat_berat (berat, tinggi, status, berat_ideal, rekomendasi) VALUES (?, ?, ?, ?, ?)";
+             pst = conn.prepareStatement(sql);
+             pst.setDouble(1, berat);
+             pst.setDouble(2, tinggi);
+             pst.setString(3, status);
+             pst.setDouble(4, beratIdeal);
+             pst.setString(5, rekomendasi);
+             pst.executeUpdate();
+             JOptionPane.showMessageDialog(this, "✅ Data berhasil disimpan!");
+         } catch (NumberFormatException e) {
+             JOptionPane.showMessageDialog(this, "❌ Masukkan hanya angka yang valid!", "Kesalahan Input", JOptionPane.WARNING_MESSAGE);
+         } catch (SQLException e) {
+             JOptionPane.showMessageDialog(this, "❌ Gagal simpan: " + e.getMessage(), "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
+         } finally {
+             try {
+                 if (pst != null) pst.close();
+                 if (conn != null) conn.close();
+             } catch (SQLException ex) {
+                 ex.printStackTrace();
+             }
+         }
+    }//GEN-LAST:event_btnCekActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        txtBerat.setText("");    // Kosongkan input berat
+        txtTinggi.setText("");   // Kosongkan input tinggi
+        lblHasil.setText("");    // Hapus hasil
+        txtBerat.requestFocus(); // Kembalikan kursor ke kolom pertama
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    private void txtTinggiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTinggiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTinggiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -103,13 +207,14 @@ public class CekBeratBadan extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnCek;
+    private javax.swing.JButton btnReset;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel lblBerat;
+    private javax.swing.JLabel lblHasil;
+    private javax.swing.JLabel lblTinggi;
+    private javax.swing.JTextField txtBerat;
+    private javax.swing.JTextField txtTinggi;
     // End of variables declaration//GEN-END:variables
 }

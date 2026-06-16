@@ -93,6 +93,7 @@ public class Beranda extends javax.swing.JFrame {
 
         btnAir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAir.setText("Mulai\n");
+        btnAir.addActionListener(this::btnAirActionPerformed);
         getContentPane().add(btnAir, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 390, 130, 30));
 
         jLabel10.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
@@ -119,11 +120,18 @@ public class Beranda extends javax.swing.JFrame {
 
     private void btnKaloriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKaloriActionPerformed
         // TODO add your handling code here:
+        new CekKalori().setVisible(true);
     }//GEN-LAST:event_btnKaloriActionPerformed
 
     private void btnBeratActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBeratActionPerformed
         // TODO add your handling code here:
+        new CekBeratBadan().setVisible(true);
     }//GEN-LAST:event_btnBeratActionPerformed
+
+    private void btnAirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAirActionPerformed
+        // TODO add your handling code here:
+        new CekAir().setVisible(true);
+    }//GEN-LAST:event_btnAirActionPerformed
 
     /**
      * @param args the command line arguments

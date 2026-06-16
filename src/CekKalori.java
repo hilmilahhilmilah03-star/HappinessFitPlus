@@ -5,8 +5,12 @@
 
 /**
  *
- * @author Acer
+ * @author Hilmi, Faizah, dan Desta
  */
+import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 public class CekKalori extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CekKalori.class.getName());
@@ -16,6 +20,9 @@ public class CekKalori extends javax.swing.JFrame {
      */
     public CekKalori() {
         initComponents();
+        setResizable(false);
+        setSize(1062, 574);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -28,18 +35,19 @@ public class CekKalori extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        lblUsia = new javax.swing.JLabel();
+        txtUsia = new javax.swing.JTextField();
+        lblKelamin = new javax.swing.JLabel();
+        lblTinggi = new javax.swing.JLabel();
+        lblBerat = new javax.swing.JLabel();
+        comKelamin = new javax.swing.JComboBox<>();
+        lblAktivitas = new javax.swing.JLabel();
+        comAktivitas = new javax.swing.JComboBox<>();
+        btnReset = new javax.swing.JButton();
+        btnCek = new javax.swing.JButton();
+        txtTinggi = new javax.swing.JTextField();
+        txtBerat = new javax.swing.JTextField();
+        lblHasil = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -50,66 +58,153 @@ public class CekKalori extends javax.swing.JFrame {
         jLabel2.setText("Cek Kebutuhan Kalori");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 50, -1, -1));
 
-        jLabel3.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        jLabel3.setText("Usia");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 200, -1, -1));
+        lblUsia.setBackground(new java.awt.Color(0, 0, 0));
+        lblUsia.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        lblUsia.setText("Usia");
+        getContentPane().add(lblUsia, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 180, -1, -1));
 
-        jTextField1.setBackground(new java.awt.Color(255, 204, 255));
-        jTextField1.setForeground(new java.awt.Color(255, 255, 255));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 240, 190, 60));
+        txtUsia.setBackground(new java.awt.Color(255, 204, 255));
+        txtUsia.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
+        getContentPane().add(txtUsia, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 220, 190, 60));
 
-        jLabel4.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel4.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        jLabel4.setText("Jenis Kelamin");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 200, -1, -1));
+        lblKelamin.setBackground(new java.awt.Color(0, 0, 0));
+        lblKelamin.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        lblKelamin.setText("Jenis Kelamin");
+        getContentPane().add(lblKelamin, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 180, -1, -1));
 
-        jLabel5.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel5.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
-        jLabel5.setText("Tinggi Badan (Cm)");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 340, -1, -1));
+        lblTinggi.setBackground(new java.awt.Color(0, 0, 0));
+        lblTinggi.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
+        lblTinggi.setText("Tinggi Badan (Cm)");
+        getContentPane().add(lblTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 310, -1, -1));
 
-        jButton2.setBackground(new java.awt.Color(255, 204, 255));
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 380, 190, 50));
+        lblBerat.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
+        lblBerat.setText("Berat Badan (Kg)");
+        getContentPane().add(lblBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 310, -1, -1));
 
-        jLabel6.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
-        jLabel6.setText("Berat Badan (Kg)");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 340, -1, -1));
+        comKelamin.setBackground(new java.awt.Color(255, 204, 255));
+        comKelamin.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
+        comKelamin.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Wanita", "Laki-laki" }));
+        getContentPane().add(comKelamin, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 220, 180, 60));
 
-        jComboBox1.setBackground(new java.awt.Color(255, 204, 255));
-        jComboBox1.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Wanita", "Laki-laki" }));
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 240, 180, 60));
+        lblAktivitas.setBackground(new java.awt.Color(0, 0, 0));
+        lblAktivitas.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
+        lblAktivitas.setText("Aktivitas");
+        getContentPane().add(lblAktivitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 180, -1, -1));
 
-        jButton1.setBackground(new java.awt.Color(255, 204, 255));
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 380, 180, 50));
+        comAktivitas.setBackground(new java.awt.Color(255, 204, 255));
+        comAktivitas.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
+        comAktivitas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ringan", "Sedang", "Berat", " " }));
+        getContentPane().add(comAktivitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 220, 160, 60));
 
-        jLabel7.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel7.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
-        jLabel7.setText("Aktivitas");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 200, -1, -1));
+        btnReset.setBackground(new java.awt.Color(255, 0, 0));
+        btnReset.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        btnReset.setText("Reset");
+        btnReset.addActionListener(this::btnResetActionPerformed);
+        getContentPane().add(btnReset, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 380, 180, 40));
 
-        jComboBox2.setBackground(new java.awt.Color(255, 204, 255));
-        jComboBox2.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ringan", "Sedang", "Berat", " " }));
-        getContentPane().add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 240, 160, 60));
+        btnCek.setBackground(new java.awt.Color(102, 255, 102));
+        btnCek.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        btnCek.setText("Cek Sekarang");
+        btnCek.addActionListener(this::btnCekActionPerformed);
+        getContentPane().add(btnCek, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 320, 180, 40));
 
-        jButton3.setBackground(new java.awt.Color(255, 0, 0));
-        jButton3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jButton3.setText("Reset");
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 340, 160, -1));
+        txtTinggi.setBackground(new java.awt.Color(255, 204, 255));
+        txtTinggi.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
+        txtTinggi.addActionListener(this::txtTinggiActionPerformed);
+        getContentPane().add(txtTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 350, 190, 60));
 
-        jButton4.setBackground(new java.awt.Color(102, 255, 102));
-        jButton4.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jButton4.setText("Cek Sekarang");
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 400, 160, 30));
+        txtBerat.setBackground(new java.awt.Color(255, 204, 255));
+        txtBerat.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
+        getContentPane().add(txtBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 350, 180, 60));
+
+        lblHasil.setBackground(new java.awt.Color(204, 255, 204));
+        lblHasil.setOpaque(true);
+        getContentPane().add(lblHasil, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 440, 580, 90));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgKalori(1).png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 1060, 570));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtTinggiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTinggiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTinggiActionPerformed
+
+    private void btnCekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCekActionPerformed
+        // TODO add your handling code here:
+        Connection conn = null;
+         PreparedStatement pst = null;
+         try {
+             // Ambil input
+             int usia = Integer.parseInt(txtUsia.getText().trim());
+             String jenisKelamin = comKelamin.getSelectedItem().toString();
+             double tinggi = Double.parseDouble(txtTinggi.getText().trim());
+             double berat = Double.parseDouble(txtBerat.getText().trim());
+             String aktivitas = comAktivitas.getSelectedItem().toString();
+             // Validasi input
+             if (usia <= 0 || tinggi <= 0 || berat <= 0) {
+                 JOptionPane.showMessageDialog(this, "Masukkan angka yang lebih dari 0!", "Input Salah", JOptionPane.WARNING_MESSAGE);
+                 return;
+             }
+             // Hitung BMR
+             double bmr;
+             if (jenisKelamin.equals("Pria")) {
+                 bmr = (10 * berat) + (6.25 * tinggi) - (5 * usia) + 5;
+             } else {
+                 bmr = (10 * berat) + (6.25 * tinggi) - (5 * usia) - 161;
+             }
+             // Hitung kebutuhan kalori harian
+             double kebutuhanKalori;
+             if (aktivitas.equals("Ringan")) {
+                 kebutuhanKalori = bmr * 1.375;
+             } else if (aktivitas.equals("Sedang")) {
+                 kebutuhanKalori = bmr * 1.55;
+             } else {
+                 kebutuhanKalori = bmr * 1.725;
+             }
+             // Tampilkan hasil
+             lblHasil.setText(String.format(
+                 "<html>✅ Kebutuhan Kalori Harian Anda:<br>≈ %.0f Kalori / Hari<br>(BMR: %.0f Kalori)</html>",
+                 kebutuhanKalori, bmr
+             ));
+             // === SIMPAN KE DATABASE ===
+             conn = Koneksi.bukaKoneksi();
+             String sql = "INSERT INTO riwayat_kalori (usia, jenis_kelamin, tinggi, berat, aktivitas, kebutuhan_kalori) VALUES (?, ?, ?, ?, ?, ?)";
+             pst = conn.prepareStatement(sql);
+             pst.setInt(1, usia);
+             pst.setString(2, jenisKelamin);
+             pst.setDouble(3, tinggi);
+             pst.setDouble(4, berat);
+             pst.setString(5, aktivitas);
+             pst.setDouble(6, kebutuhanKalori);
+             pst.executeUpdate();
+             JOptionPane.showMessageDialog(this, "✅ Data kalori berhasil disimpan!");
+         } catch (NumberFormatException e) {
+             JOptionPane.showMessageDialog(this, "❌ Masukkan hanya angka untuk usia, tinggi, dan berat!", "Kesalahan Input", JOptionPane.WARNING_MESSAGE);
+         } catch (SQLException e) {
+             JOptionPane.showMessageDialog(this, "❌ Gagal simpan: " + e.getMessage(), "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
+         } finally {
+             try {
+                 if (pst != null) pst.close();
+                 if (conn != null) conn.close();
+             } catch (SQLException ex) {
+                 ex.printStackTrace();
+             }
+         }
+    }//GEN-LAST:event_btnCekActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+         txtUsia.setText("");
+         txtTinggi.setText("");
+         txtBerat.setText("");
+         comKelamin.setSelectedIndex(0);
+         comAktivitas.setSelectedIndex(0);
+         lblHasil.setText("");
+         lblHasil.setBackground(new java.awt.Color(240, 240, 240));
+         txtUsia.requestFocus();
+    }//GEN-LAST:event_btnResetActionPerformed
 
     /**
      * @param args the command line arguments
@@ -137,19 +232,20 @@ public class CekKalori extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton btnCek;
+    private javax.swing.JButton btnReset;
+    private javax.swing.JComboBox<String> comAktivitas;
+    private javax.swing.JComboBox<String> comKelamin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblAktivitas;
+    private javax.swing.JLabel lblBerat;
+    private javax.swing.JLabel lblHasil;
+    private javax.swing.JLabel lblKelamin;
+    private javax.swing.JLabel lblTinggi;
+    private javax.swing.JLabel lblUsia;
+    private javax.swing.JTextField txtBerat;
+    private javax.swing.JTextField txtTinggi;
+    private javax.swing.JTextField txtUsia;
     // End of variables declaration//GEN-END:variables
 }
