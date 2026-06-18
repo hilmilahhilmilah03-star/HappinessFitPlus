@@ -49,49 +49,49 @@ public class CekAir extends javax.swing.JFrame {
 
         lblBerat.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         lblBerat.setText("Berat Badan (Kg)");
-        getContentPane().add(lblBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 220, 200, 30));
+        getContentPane().add(lblBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 190, 200, 30));
 
         txtBerat.setBackground(new java.awt.Color(204, 255, 255));
         txtBerat.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        getContentPane().add(txtBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 260, 220, 60));
+        getContentPane().add(txtBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 230, 220, 60));
 
         lblAktivitas.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         lblAktivitas.setText("Aktivitas");
-        getContentPane().add(lblAktivitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 220, 100, -1));
+        getContentPane().add(lblAktivitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 190, 100, -1));
 
         comAktivitas.setBackground(new java.awt.Color(255, 255, 204));
         comAktivitas.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         comAktivitas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ringan", "Sedang", "Berat" }));
-        getContentPane().add(comAktivitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 260, 250, 60));
+        getContentPane().add(comAktivitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 230, 250, 60));
 
         btnReset.setBackground(new java.awt.Color(204, 0, 51));
         btnReset.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         btnReset.setForeground(new java.awt.Color(255, 255, 255));
         btnReset.setText("Reset");
         btnReset.addActionListener(this::btnResetActionPerformed);
-        getContentPane().add(btnReset, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 230, 150, 40));
+        getContentPane().add(btnReset, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 190, 150, 40));
 
         btnCek.setBackground(new java.awt.Color(0, 204, 51));
         btnCek.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         btnCek.setForeground(new java.awt.Color(255, 255, 255));
         btnCek.setText("Cek Sekarang");
         btnCek.addActionListener(this::btnCekActionPerformed);
-        getContentPane().add(btnCek, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 290, 150, 40));
+        getContentPane().add(btnCek, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 250, 150, 40));
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Cek Kebutuhan Air");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 50, 470, 80));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, 470, 80));
 
         lblHasil.setBackground(new java.awt.Color(204, 255, 204));
         lblHasil.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         lblHasil.setForeground(new java.awt.Color(255, 255, 255));
         lblHasil.setOpaque(true);
-        getContentPane().add(lblHasil, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 390, 520, 100));
+        getContentPane().add(lblHasil, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 330, 770, 160));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgAir(1).png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgAir.png"))); // NOI18N
         jLabel1.setText("\n");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1060, 570));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1060, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

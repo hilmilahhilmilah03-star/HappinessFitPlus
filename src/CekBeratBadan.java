@@ -50,49 +50,50 @@ public class CekBeratBadan extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Cek Berat Badan Ideal");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 70, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 30, -1, -1));
 
         lblBerat.setBackground(new java.awt.Color(0, 0, 0));
         lblBerat.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         lblBerat.setText("Berat Badan (Kg)");
-        getContentPane().add(lblBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 250, -1, -1));
+        getContentPane().add(lblBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 170, -1, -1));
 
         txtBerat.setBackground(new java.awt.Color(204, 255, 255));
         txtBerat.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         txtBerat.addActionListener(this::txtBeratActionPerformed);
-        getContentPane().add(txtBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 290, 190, 60));
+        getContentPane().add(txtBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 210, 190, 60));
 
         lblTinggi.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         lblTinggi.setText("Tinggi Badan (Cm)");
-        getContentPane().add(lblTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 250, -1, -1));
+        getContentPane().add(lblTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 170, -1, -1));
 
         txtTinggi.setBackground(new java.awt.Color(255, 255, 204));
         txtTinggi.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         txtTinggi.addActionListener(this::txtTinggiActionPerformed);
-        getContentPane().add(txtTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 290, 210, 60));
+        getContentPane().add(txtTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 210, 210, 60));
 
         btnReset.setBackground(new java.awt.Color(204, 0, 51));
         btnReset.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         btnReset.setForeground(new java.awt.Color(255, 255, 255));
         btnReset.setText("Reset");
         btnReset.addActionListener(this::btnResetActionPerformed);
-        getContentPane().add(btnReset, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 250, 150, 40));
+        getContentPane().add(btnReset, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 180, 150, 40));
 
         btnCek.setBackground(new java.awt.Color(102, 255, 102));
         btnCek.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         btnCek.setForeground(new java.awt.Color(255, 255, 255));
         btnCek.setText("Cek Sekarang");
         btnCek.addActionListener(this::btnCekActionPerformed);
-        getContentPane().add(btnCek, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 310, 150, 40));
+        getContentPane().add(btnCek, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 230, 150, 40));
 
         lblHasil.setBackground(new java.awt.Color(204, 255, 204));
         lblHasil.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         lblHasil.setForeground(new java.awt.Color(255, 255, 255));
         lblHasil.setOpaque(true);
-        getContentPane().add(lblHasil, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 390, 650, 150));
+        getContentPane().add(lblHasil, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 310, 710, 190));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgCekBerat(1).png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgCekBerat(2).png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 570));
 
         pack();

@@ -55,73 +55,74 @@ public class CekKalori extends javax.swing.JFrame {
 
         jLabel2.setBackground(new java.awt.Color(0, 0, 0));
         jLabel2.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Cek Kebutuhan Kalori");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 50, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 30, -1, -1));
 
         lblUsia.setBackground(new java.awt.Color(0, 0, 0));
         lblUsia.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         lblUsia.setText("Usia");
-        getContentPane().add(lblUsia, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 180, -1, -1));
+        getContentPane().add(lblUsia, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, -1, -1));
 
         txtUsia.setBackground(new java.awt.Color(255, 204, 255));
         txtUsia.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
-        getContentPane().add(txtUsia, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 220, 190, 60));
+        getContentPane().add(txtUsia, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 180, 190, 60));
 
         lblKelamin.setBackground(new java.awt.Color(0, 0, 0));
         lblKelamin.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         lblKelamin.setText("Jenis Kelamin");
-        getContentPane().add(lblKelamin, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 180, -1, -1));
+        getContentPane().add(lblKelamin, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 140, -1, -1));
 
         lblTinggi.setBackground(new java.awt.Color(0, 0, 0));
         lblTinggi.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
         lblTinggi.setText("Tinggi Badan (Cm)");
-        getContentPane().add(lblTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 310, -1, -1));
+        getContentPane().add(lblTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, -1, -1));
 
         lblBerat.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
         lblBerat.setText("Berat Badan (Kg)");
-        getContentPane().add(lblBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 310, -1, -1));
+        getContentPane().add(lblBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 270, -1, -1));
 
         comKelamin.setBackground(new java.awt.Color(255, 204, 255));
         comKelamin.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
         comKelamin.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Wanita", "Laki-laki" }));
-        getContentPane().add(comKelamin, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 220, 180, 60));
+        getContentPane().add(comKelamin, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 180, 180, 60));
 
         lblAktivitas.setBackground(new java.awt.Color(0, 0, 0));
         lblAktivitas.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
         lblAktivitas.setText("Aktivitas");
-        getContentPane().add(lblAktivitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 180, -1, -1));
+        getContentPane().add(lblAktivitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 140, -1, -1));
 
         comAktivitas.setBackground(new java.awt.Color(255, 204, 255));
         comAktivitas.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
         comAktivitas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ringan", "Sedang", "Berat", " " }));
-        getContentPane().add(comAktivitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 220, 160, 60));
+        getContentPane().add(comAktivitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 180, 160, 60));
 
         btnReset.setBackground(new java.awt.Color(255, 0, 0));
         btnReset.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         btnReset.setText("Reset");
         btnReset.addActionListener(this::btnResetActionPerformed);
-        getContentPane().add(btnReset, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 380, 180, 40));
+        getContentPane().add(btnReset, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 330, 180, 40));
 
         btnCek.setBackground(new java.awt.Color(102, 255, 102));
         btnCek.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         btnCek.setText("Cek Sekarang");
         btnCek.addActionListener(this::btnCekActionPerformed);
-        getContentPane().add(btnCek, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 320, 180, 40));
+        getContentPane().add(btnCek, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 270, 180, 40));
 
         txtTinggi.setBackground(new java.awt.Color(255, 204, 255));
         txtTinggi.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
         txtTinggi.addActionListener(this::txtTinggiActionPerformed);
-        getContentPane().add(txtTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 350, 190, 60));
+        getContentPane().add(txtTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 310, 190, 60));
 
         txtBerat.setBackground(new java.awt.Color(255, 204, 255));
         txtBerat.setFont(new java.awt.Font("SansSerif", 1, 20)); // NOI18N
-        getContentPane().add(txtBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 350, 180, 60));
+        getContentPane().add(txtBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 310, 180, 60));
 
         lblHasil.setBackground(new java.awt.Color(204, 255, 204));
         lblHasil.setOpaque(true);
-        getContentPane().add(lblHasil, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 440, 580, 90));
+        getContentPane().add(lblHasil, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 400, 730, 120));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgKalori(1).png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgKalori.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 1060, 570));
 
         pack();
