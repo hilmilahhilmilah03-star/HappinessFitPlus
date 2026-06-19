@@ -11,13 +11,15 @@ import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-public class CekAir extends javax.swing.JFrame {
+public class CekAir extends javax.swing.JFrame implements PerhitunganKesehatan{
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CekAir.class.getName());
 
     /**
      * Creates new form CekAir
      */
+    private double kebutuhanMl;
+    private double kebutuhanAir;
     public CekAir() {
         initComponents();
         setResizable(false);
@@ -101,6 +103,7 @@ public class CekAir extends javax.swing.JFrame {
         txtBerat.setText("");
         comAktivitas.setSelectedIndex(0);
         lblHasil.setText("");
+        lblHasil.setBackground(new java.awt.Color(240, 240, 240));
         txtBerat.requestFocus();
     }//GEN-LAST:event_btnResetActionPerformed
 
@@ -108,42 +111,47 @@ public class CekAir extends javax.swing.JFrame {
         // TODO add your handling code here:
         Connection conn = null;
         PreparedStatement pst = null;
+
         try {
-            // Ambil input
+            // 1. Ambil data dari input
             double berat = Double.parseDouble(txtBerat.getText().trim());
             String aktivitas = comAktivitas.getSelectedItem().toString();
+  
             // Validasi angka
             if (berat <= 0) {
                 JOptionPane.showMessageDialog(this, "Masukkan berat badan lebih dari 0!", "Input Salah", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            // Hitung kebutuhan air
-            double kebutuhanMl;
-            if(aktivitas.equals("Ringan")) {
+          // 2. Hitung kebutuhan air (sesuai logika)
+            if (aktivitas.equals("Ringan")) {
                 kebutuhanMl = berat * 35;
             } else if (aktivitas.equals("Sedang")) {
                 kebutuhanMl = berat * 40;
             } else {
                 kebutuhanMl = berat * 45;
             }
+            kebutuhanAir = kebutuhanMl;
             double kebutuhanLiter = kebutuhanMl / 1000;
-            // Tampilkan hasil
-            lblHasil.setText(String.format("<html>✅ Kebutuhan Air Harian Anda:<br>%.0f ml <br>≈ %.2f Liter</html>", kebutuhanMl, kebutuhanLiter));
-            // === SIMPAN KE DATABASE ===
-            conn = Koneksi.bukaKoneksi();
-            String sql = "INSERT INTO riwayat_air (berat, aktivitas, kebutuhan_air) VALUES (?, ?, ?)";
+
+            // 3. Tampilkan hasil di layar
+            lblHasil.setText(String.format("<html>💧 Kebutuhan Air Harian Anda:<br>%.0f ml<br>≈ %.2f Liter</html>", kebutuhanMl, kebutuhanLiter));
+             conn = Koneksi.bukaKoneksi();
+            String sql = "INSERT INTO riwayat_air (id_pengguna, berat, aktivitas, kebutuhan_air) VALUES (?, ?, ?, ?)";
             pst = conn.prepareStatement(sql);
-            pst.setDouble(1, berat);
-            pst.setString(2, aktivitas);
-            pst.setString(3, String.format("%.0f ml = %.2f Liter", kebutuhanMl, kebutuhanLiter));
+
+            pst.setInt(1, 1);                 // ID user sementara 1
+            pst.setDouble(2, berat);
+            pst.setString(3, aktivitas);
+            pst.setDouble(4, kebutuhanMl);
+
             pst.executeUpdate();
-            JOptionPane.showMessageDialog(this, "✅ Data kebutuhan air berhasil disimpan!");
+            JOptionPane.showMessageDialog(this, "✅ Data berhasil disimpan ke Riwayat Air!");
+
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "❌ Masukkan hanya angka untuk berat badan!", "Kesalahan Input", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "❌ Hanya masukkan angka untuk berat badan!", "Kesalahan Input", JOptionPane.WARNING_MESSAGE);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "❌ Gagal simpan ke database: " + e.getMessage(), "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "❌ Gagal simpan: " + e.getMessage(), "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
         } finally {
-            // Tutup koneksi
             try {
                 if (pst != null) pst.close();
                 if (conn != null) conn.close();
@@ -153,6 +161,22 @@ public class CekAir extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCekActionPerformed
 
+    @Override
+    public double hitungNilai() {
+        return kebutuhanMl;
+    }
+
+    @Override
+    public String tentukanKategori() {
+        if (kebutuhanAir < 1500) return "Kurang Cukup";
+        else if (kebutuhanAir < 2500) return "Cukup";
+        else return "Lebih dari Cukup";
+    }
+
+    @Override
+    public String getHasilLengkap() {
+        return String.format("Kebutuhan : %.0f ml (%.2f Liter)", kebutuhanMl, kebutuhanMl / 1000);
+    }
     /**
      * @param args the command line arguments
      */

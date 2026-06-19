@@ -11,13 +11,17 @@ import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-public class CekBeratBadan extends javax.swing.JFrame {
+public class CekBeratBadan extends javax.swing.JFrame implements PerhitunganKesehatan{
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CekBeratBadan.class.getName());
 
     /**
      * Creates new form CekBeratBadan
      */
+    private double imt;
+    private double beratIdeal;
+    private String status;
+    private String rekomendasi;
     public CekBeratBadan() {
         initComponents();
         setResizable(false);
@@ -105,83 +109,109 @@ public class CekBeratBadan extends javax.swing.JFrame {
 
     private void btnCekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCekActionPerformed
         // TODO add your handling code here:
-         Connection conn = null;
-         PreparedStatement pst = null;
-         try {
-             // Ambil input
-             double berat = Double.parseDouble(txtBerat.getText().trim());
-             double tinggi = Double.parseDouble(txtTinggi.getText().trim());
-             if (berat <= 0 || tinggi <= 0) {
-                 JOptionPane.showMessageDialog(this, "Masukkan angka lebih dari 0!", "Input Salah", JOptionPane.WARNING_MESSAGE);
-                 return;
-             }
-             // 1. Hitung IMT
-             double tinggiMeter = tinggi / 100;
-             double imt = berat / (tinggiMeter * tinggiMeter);
-             // 2. Hitung Berat Ideal Rumus Broca
-             double beratIdeal = (tinggi - 100) - ((tinggi - 100) * 0.1);
-             // 3. Tentukan status & rekomendasi
-             String status, rekomendasi;
-             if (imt < 18.5) {
-                 status = "Kurus";
-                 rekomendasi = "Perbanyak asupan gizi dan makan teratur.";
-                 lblHasil.setBackground(new java.awt.Color(187, 222, 251));
-             } else if (imt <= 24.9) {
-                 status = "Berat Badan Ideal ✅";
-                 rekomendasi = "Pertahankan pola makan dan gaya hidup sehat.";
-                 lblHasil.setBackground(new java.awt.Color(200, 230, 201));
-             } else if (imt <= 29.9) {
-                 status = "Kelebihan Berat Badan ⚠️";
-                 rekomendasi = "Kurangi makanan berlemak dan perbanyak olahraga.";
-                 lblHasil.setBackground(new java.awt.Color(255, 224, 178));
-             } else {
-                 status = "Obesitas ❌";
-                 rekomendasi = "Atur pola makan dan rutin berolahraga, konsultasi ke dokter jika perlu.";
-                 lblHasil.setBackground(new java.awt.Color(255, 205, 210));
-             }
-             // Tampilkan hasil di layar
-             lblHasil.setText(String.format(
-                 "<html>Indeks Massa Tubuh = %.2f<br>Berat Ideal = %.1f Kg<br>%s<br>%s</html>",
-                 imt, beratIdeal, status, rekomendasi
-             ));
-             lblHasil.setOpaque(true);
-             // === SIMPAN KE DATABASE ===
-             conn = Koneksi.bukaKoneksi();
-             String sql = "INSERT INTO riwayat_berat (berat, tinggi, status, berat_ideal, rekomendasi) VALUES (?, ?, ?, ?, ?)";
-             pst = conn.prepareStatement(sql);
-             pst.setDouble(1, berat);
-             pst.setDouble(2, tinggi);
-             pst.setString(3, status);
-             pst.setDouble(4, beratIdeal);
-             pst.setString(5, rekomendasi);
-             pst.executeUpdate();
-             JOptionPane.showMessageDialog(this, "✅ Data berhasil disimpan!");
-         } catch (NumberFormatException e) {
-             JOptionPane.showMessageDialog(this, "❌ Masukkan hanya angka yang valid!", "Kesalahan Input", JOptionPane.WARNING_MESSAGE);
-         } catch (SQLException e) {
-             JOptionPane.showMessageDialog(this, "❌ Gagal simpan: " + e.getMessage(), "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
-         } finally {
-             try {
-                 if (pst != null) pst.close();
-                 if (conn != null) conn.close();
-             } catch (SQLException ex) {
-                 ex.printStackTrace();
-             }
-         }
+        Connection conn = null;
+        PreparedStatement pst = null;
+
+        try {
+            double berat = Double.parseDouble(txtBerat.getText().trim());
+            double tinggi = Double.parseDouble(txtTinggi.getText().trim());
+
+            if (berat <= 0 || tinggi <= 0) {
+                JOptionPane.showMessageDialog(this, "Masukkan angka lebih dari 0!", "Input Salah", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // 1. Hitung IMT
+            double tinggiMeter = tinggi / 100;
+            imt = berat / (tinggiMeter * tinggiMeter);
+
+            // 2. Berat Ideal Rumus Broca
+            beratIdeal = (tinggi - 100) - ((tinggi - 100) * 0.1);
+
+            // 3. Tentukan Status & Rekomendasi
+            if (imt < 18.5) {
+                status = "Kurus";
+                rekomendasi = "Perbanyak asupan gizi dan makan teratur.";
+                lblHasil.setBackground(new java.awt.Color(187, 222, 251));
+            } else if (imt <= 24.9) {
+                status = "Berat Badan Ideal ✅";
+                rekomendasi = "Pertahankan pola makan dan gaya hidup sehat.";
+                lblHasil.setBackground(new java.awt.Color(200, 230, 201));
+            } else if (imt <= 29.9) {
+                status = "Kelebihan Berat Badan ⚠️";
+                rekomendasi = "Kurangi makanan berlemak dan perbanyak olahraga.";
+                lblHasil.setBackground(new java.awt.Color(255, 224, 178));
+            } else {
+                status = "Obesitas ❌";
+                rekomendasi = "Atur pola makan dan rutin berolahraga, konsultasi ke dokter jika perlu.";
+                lblHasil.setBackground(new java.awt.Color(255, 205, 210));
+            }
+
+            // TAMPILKAN SEMUA DI SATU TEMPAT (lblHasil)
+            lblHasil.setText(String.format(
+                "<html><b>HASIL PERHITUNGAN</b><br>" +
+                "Indeks Massa Tubuh (IMT) : %.2f<br>" +
+                "Berat Badan Ideal       : %.1f Kg<br>" +
+                "Status Kesehatan        : %s<br>" +
+                "Rekomendasi             : %s</html>",
+                imt, beratIdeal, status, rekomendasi
+            ));
+            lblHasil.setOpaque(true);
+
+            // SIMPAN KE DATABASE
+            conn = Koneksi.bukaKoneksi();
+            String sql = "INSERT INTO riwayat_berat (id_pengguna, berat_badan, tinggi_badan, imt, kategori) VALUES (?, ?, ?, ?, ?)";
+            pst = conn.prepareStatement(sql);
+            pst.setInt(1, 1);
+            pst.setDouble(2, berat);
+            pst.setDouble(3, tinggi);
+            pst.setDouble(4, imt);
+            pst.setString(5, status);
+
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(this, "✅ Data berhasil disimpan!");
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "❌ Masukkan hanya angka yang valid!", "Kesalahan Input", JOptionPane.WARNING_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "❌ Gagal simpan: " + e.getMessage(), "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (pst != null) pst.close();
+                if (conn != null) conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_btnCekActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
-        txtBerat.setText("");    // Kosongkan input berat
-        txtTinggi.setText("");   // Kosongkan input tinggi
-        lblHasil.setText("");    // Hapus hasil
-        txtBerat.requestFocus(); // Kembalikan kursor ke kolom pertama
+        txtBerat.setText("");
+        txtTinggi.setText("");
+        lblHasil.setText("");
+        lblHasil.setBackground(new java.awt.Color(204, 255, 204));
+        txtBerat.requestFocus();
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void txtTinggiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTinggiActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTinggiActionPerformed
+    
+        @Override
+        public double hitungNilai() {
+            return imt;
+        }
 
+        @Override
+        public String tentukanKategori() {
+            return status;
+        }
+
+        @Override
+        public String getHasilLengkap() {
+             return String.format("IMT: %.2f | Berat Ideal: %.1fkg | %s", imt, beratIdeal, status);
+        }
     /**
      * @param args the command line arguments
      */

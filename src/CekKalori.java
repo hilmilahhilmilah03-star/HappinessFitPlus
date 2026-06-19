@@ -11,13 +11,15 @@ import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-public class CekKalori extends javax.swing.JFrame {
+public class CekKalori extends javax.swing.JFrame implements PerhitunganKesehatan  {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CekKalori.class.getName());
 
     /**
      * Creates new form CekKalori
      */
+    private double bmr;
+    private double kebutuhanKalori;
     public CekKalori() {
         initComponents();
         setResizable(false);
@@ -119,6 +121,7 @@ public class CekKalori extends javax.swing.JFrame {
         getContentPane().add(txtBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 310, 180, 60));
 
         lblHasil.setBackground(new java.awt.Color(204, 255, 204));
+        lblHasil.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         lblHasil.setOpaque(true);
         getContentPane().add(lblHasil, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 400, 730, 120));
 
@@ -134,65 +137,71 @@ public class CekKalori extends javax.swing.JFrame {
 
     private void btnCekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCekActionPerformed
         // TODO add your handling code here:
+         
         Connection conn = null;
-         PreparedStatement pst = null;
-         try {
-             // Ambil input
-             int usia = Integer.parseInt(txtUsia.getText().trim());
-             String jenisKelamin = comKelamin.getSelectedItem().toString();
-             double tinggi = Double.parseDouble(txtTinggi.getText().trim());
-             double berat = Double.parseDouble(txtBerat.getText().trim());
-             String aktivitas = comAktivitas.getSelectedItem().toString();
-             // Validasi input
-             if (usia <= 0 || tinggi <= 0 || berat <= 0) {
-                 JOptionPane.showMessageDialog(this, "Masukkan angka yang lebih dari 0!", "Input Salah", JOptionPane.WARNING_MESSAGE);
-                 return;
-             }
-             // Hitung BMR
-             double bmr;
-             if (jenisKelamin.equals("Pria")) {
-                 bmr = (10 * berat) + (6.25 * tinggi) - (5 * usia) + 5;
-             } else {
-                 bmr = (10 * berat) + (6.25 * tinggi) - (5 * usia) - 161;
-             }
-             // Hitung kebutuhan kalori harian
-             double kebutuhanKalori;
-             if (aktivitas.equals("Ringan")) {
-                 kebutuhanKalori = bmr * 1.375;
-             } else if (aktivitas.equals("Sedang")) {
-                 kebutuhanKalori = bmr * 1.55;
-             } else {
-                 kebutuhanKalori = bmr * 1.725;
-             }
-             // Tampilkan hasil
-             lblHasil.setText(String.format(
-                 "<html>✅ Kebutuhan Kalori Harian Anda:<br>≈ %.0f Kalori / Hari<br>(BMR: %.0f Kalori)</html>",
-                 kebutuhanKalori, bmr
-             ));
-             // === SIMPAN KE DATABASE ===
-             conn = Koneksi.bukaKoneksi();
-             String sql = "INSERT INTO riwayat_kalori (usia, jenis_kelamin, tinggi, berat, aktivitas, kebutuhan_kalori) VALUES (?, ?, ?, ?, ?, ?)";
-             pst = conn.prepareStatement(sql);
-             pst.setInt(1, usia);
-             pst.setString(2, jenisKelamin);
-             pst.setDouble(3, tinggi);
-             pst.setDouble(4, berat);
-             pst.setString(5, aktivitas);
-             pst.setDouble(6, kebutuhanKalori);
-             pst.executeUpdate();
-             JOptionPane.showMessageDialog(this, "✅ Data kalori berhasil disimpan!");
-         } catch (NumberFormatException e) {
-             JOptionPane.showMessageDialog(this, "❌ Masukkan hanya angka untuk usia, tinggi, dan berat!", "Kesalahan Input", JOptionPane.WARNING_MESSAGE);
-         } catch (SQLException e) {
-             JOptionPane.showMessageDialog(this, "❌ Gagal simpan: " + e.getMessage(), "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
-         } finally {
-             try {
-                 if (pst != null) pst.close();
-                 if (conn != null) conn.close();
-             } catch (SQLException ex) {
-                 ex.printStackTrace();
-             }
-         }
+        PreparedStatement pst = null;
+
+        try {
+            // Ambil input
+            int usia = Integer.parseInt(txtUsia.getText().trim());
+            String jenisKelamin = comKelamin.getSelectedItem().toString();
+            double tinggi = Double.parseDouble(txtTinggi.getText().trim());
+            double berat = Double.parseDouble(txtBerat.getText().trim());
+            String aktivitas = comAktivitas.getSelectedItem().toString();
+
+            // Validasi input
+            if (usia <= 0 || tinggi <= 0 || berat <= 0) {
+                JOptionPane.showMessageDialog(this, "Masukkan angka yang lebih dari 0!", "Input Salah", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Hitung BMR
+            if (jenisKelamin.equals("Pria")) {
+                bmr = (10 * berat) + (6.25 * tinggi) - (5 * usia) + 5;
+            } else {
+                bmr = (10 * berat) + (6.25 * tinggi) - (5 * usia) - 161;
+            }
+            
+         // Hitung kebutuhan kalori harian
+            if (aktivitas.equals("Ringan")) {
+                kebutuhanKalori = bmr * 1.375;
+            } else if (aktivitas.equals("Sedang")) {
+                kebutuhanKalori = bmr * 1.55;
+            } else {
+                kebutuhanKalori = bmr * 1.725;
+            }
+
+            // Tampilkan hasil
+            lblHasil.setText(String.format(
+                "<html>✅ Kebutuhan Kalori Harian Anda:<br>≈ %.0f Kalori / Hari<br>(BMR: %.0f Kalori)</html>",
+                kebutuhanKalori, bmr
+            ));
+            
+          conn = Koneksi.bukaKoneksi(); // ✅ Pakai KoneksiDB sesuai standar
+            String sql = "INSERT INTO riwayat_kalori (usia, jenis_kelamin, tinggi, berat, aktivitas, kebutuhan_kalori) VALUES (?, ?, ?, ?, ?, ?)";
+            pst = conn.prepareStatement(sql);
+            pst.setInt(1, usia);
+            pst.setString(2, jenisKelamin);
+            pst.setDouble(3, tinggi);
+            pst.setDouble(4, berat);
+            pst.setString(5, aktivitas);
+            pst.setDouble(6, kebutuhanKalori);
+
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(this, "✅ Data kalori berhasil disimpan!");
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "❌ Masukkan hanya angka untuk usia, tinggi, dan berat!", "Kesalahan Input", JOptionPane.WARNING_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "❌ Gagal simpan: " + e.getMessage(), "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (pst != null) pst.close();
+                if (conn != null) conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_btnCekActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
@@ -207,6 +216,27 @@ public class CekKalori extends javax.swing.JFrame {
          txtUsia.requestFocus();
     }//GEN-LAST:event_btnResetActionPerformed
 
+     @Override
+    public double hitungNilai() {
+        return kebutuhanKalori;
+    }
+
+    @Override
+    public String tentukanKategori() {
+        if (kebutuhanKalori < 1500) {
+            return "Kebutuhan Rendah";
+        } else if (kebutuhanKalori < 2500) {
+            return "Kebutuhan Sedang";
+        } else {
+            return "Kebutuhan Tinggi";
+        }
+    }
+
+    @Override
+    public String getHasilLengkap() {
+        return String.format("BMR: %.0f Kalori | Kebutuhan Harian: %.0f Kalori", bmr, kebutuhanKalori);
+    }
+    
     /**
      * @param args the command line arguments
      */
