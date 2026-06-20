@@ -49,14 +49,12 @@ public class CekBeratBadan extends javax.swing.JFrame implements PerhitunganKese
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1062, 574));
         setSize(new java.awt.Dimension(1062, 574));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Cek Berat Badan Ideal");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 30, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, -1, -1));
 
         lblBerat.setBackground(new java.awt.Color(0, 0, 0));
         lblBerat.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
@@ -97,7 +95,7 @@ public class CekBeratBadan extends javax.swing.JFrame implements PerhitunganKese
         lblHasil.setOpaque(true);
         getContentPane().add(lblHasil, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 310, 710, 190));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgCekBerat(2).png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgCekBerat1.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 570));
 
         pack();

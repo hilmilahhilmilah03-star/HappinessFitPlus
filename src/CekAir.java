@@ -81,7 +81,6 @@ public class CekAir extends javax.swing.JFrame implements PerhitunganKesehatan{
         getContentPane().add(btnCek, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 250, 150, 40));
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Cek Kebutuhan Air");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, 470, 80));
 
@@ -91,7 +90,7 @@ public class CekAir extends javax.swing.JFrame implements PerhitunganKesehatan{
         lblHasil.setOpaque(true);
         getContentPane().add(lblHasil, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 330, 770, 160));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgAir.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgAir1.png"))); // NOI18N
         jLabel1.setText("\n");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1060, -1));
 

@@ -57,7 +57,6 @@ public class CekKalori extends javax.swing.JFrame implements PerhitunganKesehata
 
         jLabel2.setBackground(new java.awt.Color(0, 0, 0));
         jLabel2.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Cek Kebutuhan Kalori");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 30, -1, -1));
 
@@ -125,7 +124,7 @@ public class CekKalori extends javax.swing.JFrame implements PerhitunganKesehata
         lblHasil.setOpaque(true);
         getContentPane().add(lblHasil, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 400, 730, 120));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgKalori.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgKalori1.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 1060, 570));
 
         pack();
