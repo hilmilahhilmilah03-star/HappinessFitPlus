@@ -21,4 +21,4 @@ Source code project: Dibuat menggunakan Netbeans.
   5. Form Cek Air
   6. Form Cek Kalori
   7. Koneksi Database
-Tautan Repository GitHub: https://github.com/hilmilahhilmilah03-star/FitPlusApp
+Tautan Repository GitHub: https://github.com/hilmilahhilmilah03-star/HappinessFitPlus.git
