@@ -26,7 +26,15 @@ public class CekAir extends javax.swing.JFrame implements PerhitunganKesehatan{
         setSize(1062, 574);
         setLocationRelativeTo(null);
     }
+    
+    // Overloading Method
+    public double hitungAir(double berat) {
+        return berat * 35;
+    }
 
+    public double hitungAir(double berat, double aktivitas) {
+        return (berat * 35) + aktivitas;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,6 +116,13 @@ public class CekAir extends javax.swing.JFrame implements PerhitunganKesehatan{
 
     private void btnCekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCekActionPerformed
         // TODO add your handling code here:
+        DataKesehatan data = new DataAir("User");
+
+        if (data instanceof DataAir) {
+            DataAir air = (DataAir) data;
+            air.tampilInfo();
+        }
+        
         Connection conn = null;
         PreparedStatement pst = null;
 
@@ -123,25 +138,32 @@ public class CekAir extends javax.swing.JFrame implements PerhitunganKesehatan{
             }
           // 2. Hitung kebutuhan air (sesuai logika)
             if (aktivitas.equals("Ringan")) {
-                kebutuhanMl = berat * 35;
+                kebutuhanMl = hitungAir(berat);
             } else if (aktivitas.equals("Sedang")) {
-                kebutuhanMl = berat * 40;
+                kebutuhanMl = hitungAir(berat, 300);
             } else {
-                kebutuhanMl = berat * 45;
+                kebutuhanMl = hitungAir(berat, 600);
             }
             kebutuhanAir = kebutuhanMl;
             double kebutuhanLiter = kebutuhanMl / 1000;
 
             // 3. Tampilkan hasil di layar
-            lblHasil.setText(String.format("<html>💧 Kebutuhan Air Harian Anda:<br>%.0f ml<br>≈ %.2f Liter</html>", kebutuhanMl, kebutuhanLiter));
-             conn = Koneksi.bukaKoneksi();
-            String sql = "INSERT INTO riwayat_air (id_pengguna, berat, aktivitas, kebutuhan_air) VALUES (?, ?, ?, ?)";
+            lblHasil.setText(
+                String.format(
+                    "<html>💧 Kebutuhan Air Harian Anda:<br>%.0f ml<br>≈ %.2f Liter<br>Kategori : %s</html>",
+                    kebutuhanMl,
+                    kebutuhanLiter,
+                    tentukanKategori()
+                )
+            );
+            
+            conn = Koneksi.bukaKoneksi();
+            String sql = "INSERT INTO riwayat_air ( berat, aktivitas, kebutuhan_air) VALUES (?, ?, ?)";
             pst = conn.prepareStatement(sql);
-
-            pst.setInt(1, 1);                 // ID user sementara 1
-            pst.setDouble(2, berat);
-            pst.setString(3, aktivitas);
-            pst.setDouble(4, kebutuhanMl);
+            
+            pst.setDouble(1, berat);
+            pst.setString(2, aktivitas);
+            pst.setDouble(3, kebutuhanMl);
 
             pst.executeUpdate();
             JOptionPane.showMessageDialog(this, "✅ Data berhasil disimpan ke Riwayat Air!");
@@ -167,9 +189,12 @@ public class CekAir extends javax.swing.JFrame implements PerhitunganKesehatan{
 
     @Override
     public String tentukanKategori() {
-        if (kebutuhanAir < 1500) return "Kurang Cukup";
-        else if (kebutuhanAir < 2500) return "Cukup";
-        else return "Lebih dari Cukup";
+    if (kebutuhanMl < 2000)
+        return "Kebutuhan Air Rendah";
+    else if (kebutuhanMl < 3000)
+        return "Kebutuhan Air Normal";
+    else
+        return "Kebutuhan Air Tinggi";
     }
 
     @Override

@@ -158,13 +158,13 @@ public class CekBeratBadan extends javax.swing.JFrame implements PerhitunganKese
 
             // SIMPAN KE DATABASE
             conn = Koneksi.bukaKoneksi();
-            String sql = "INSERT INTO riwayat_berat (id_pengguna, berat_badan, tinggi_badan, imt, kategori) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO riwayat_berat (berat, tinggi, status, berat_ideal, rekomendasi) VALUES (?, ?, ?, ?, ?)";
             pst = conn.prepareStatement(sql);
-            pst.setInt(1, 1);
-            pst.setDouble(2, berat);
-            pst.setDouble(3, tinggi);
-            pst.setDouble(4, imt);
-            pst.setString(5, status);
+            pst.setDouble(1, berat);
+            pst.setDouble(2, tinggi);
+            pst.setString(3, status);
+            pst.setDouble(4, beratIdeal);
+            pst.setString(5, rekomendasi);
 
             pst.executeUpdate();
             JOptionPane.showMessageDialog(this, "✅ Data berhasil disimpan!");
