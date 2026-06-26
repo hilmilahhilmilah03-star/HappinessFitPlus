@@ -5,8 +5,11 @@
 
 /**
  *
- * @author Acer
+ * @author Hilmi, Faizah, dan Desta
  */
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.*;
 public class RiwayatCekBB extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RiwayatCekBB.class.getName());
@@ -16,6 +19,51 @@ public class RiwayatCekBB extends javax.swing.JFrame {
      */
     public RiwayatCekBB() {
         initComponents();
+        setTitle("Riwayat Cek Berat Ideal");
+        setLocationRelativeTo(null);
+        
+        riwayat_berat.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting() && riwayat_berat.getSelectedRow() != -1) {
+                int baris = riwayat_berat.getSelectedRow();
+                txtBerat.setText(riwayat_berat.getValueAt(baris, 1).toString());
+                txtTinggi.setText(riwayat_berat.getValueAt(baris, 2).toString());
+            }
+        });
+        
+        tampilkanData();
+    }
+    
+     private void tampilkanData() {
+        DefaultTableModel model = (DefaultTableModel) riwayat_berat.getModel();
+        model.setRowCount(0);
+
+        try {
+            Connection conn = Koneksi.bukaKoneksi();
+            // Sesuai nama tabel & kolom di DB: riwayat_berat
+            String sql = "SELECT * FROM riwayat_berat ORDER BY id ASC";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                // Ambil data sesuai nama kolom yang ada di DB
+                model.addRow(new Object[]{
+                    rs.getInt("id"),
+                    rs.getDouble("berat"),
+                    rs.getDouble("tinggi"),
+                    rs.getString("status"),
+                    Math.round(rs.getDouble("berat_ideal")) + " kg", // Tampil bulat + satuan
+                    rs.getString("rekomendasi")
+                });
+            }
+            conn.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Gagal memuat data: " + ex.getMessage());
+        }
+    }
+
+      private void bersihkanForm() {
+        txtBerat.setText("");
+        txtTinggi.setText("");
     }
 
     /**
@@ -28,26 +76,93 @@ public class RiwayatCekBB extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        riwayat_berat = new javax.swing.JTable();
+        lblBerat = new javax.swing.JLabel();
+        txtBerat = new javax.swing.JTextField();
+        lblTinggi = new javax.swing.JLabel();
+        txtTinggi = new javax.swing.JTextField();
+        btnEdit = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnKembali = new javax.swing.JButton();
+        lblJudul = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        riwayat_berat.setBackground(new java.awt.Color(255, 255, 204));
+        riwayat_berat.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        riwayat_berat.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Berat", "Tinggi", "Status", "Berat Ideal", "Rekomendasi"
             }
-        ));
-        jScrollPane2.setViewportView(jTable2);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+            };
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 210, 510, 230));
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        riwayat_berat.setAlignmentX(1.5F);
+        riwayat_berat.setAlignmentY(1.5F);
+        riwayat_berat.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        riwayat_berat.setRowHeight(25);
+        jScrollPane2.setViewportView(riwayat_berat);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 190, 670, 270));
+
+        lblBerat.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        lblBerat.setText("Berat Badan");
+        getContentPane().add(lblBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 190, 120, 20));
+
+        txtBerat.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        getContentPane().add(txtBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 220, 130, 30));
+
+        lblTinggi.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        lblTinggi.setText("Tinggi Badan");
+        getContentPane().add(lblTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 280, -1, -1));
+
+        txtTinggi.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        getContentPane().add(txtTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 310, 120, 30));
+
+        btnEdit.setBackground(new java.awt.Color(0, 204, 51));
+        btnEdit.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(255, 255, 255));
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(this::btnEditActionPerformed);
+        getContentPane().add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 380, 130, 30));
+
+        btnDelete.setBackground(new java.awt.Color(204, 51, 0));
+        btnDelete.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(this::btnDeleteActionPerformed);
+        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 420, 130, 30));
+
+        btnKembali.setBackground(new java.awt.Color(153, 0, 204));
+        btnKembali.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnKembali.setForeground(new java.awt.Color(255, 255, 255));
+        btnKembali.setText("Back");
+        btnKembali.addActionListener(this::btnKembaliActionPerformed);
+        getContentPane().add(btnKembali, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 500, 90, -1));
+
+        lblJudul.setFont(new java.awt.Font("SansSerif", 1, 45)); // NOI18N
+        lblJudul.setText("Riwayat Cek Berat Ideal");
+        getContentPane().add(lblJudul, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgCekBerat1.png"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -55,6 +170,112 @@ public class RiwayatCekBB extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+         int barisTerpilih = riwayat_berat.getSelectedRow();
+
+        if (barisTerpilih == -1) {
+            JOptionPane.showMessageDialog(null, "Pilih data dulu!", "Pesan", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int id = Integer.parseInt(riwayat_berat.getValueAt(barisTerpilih, 0).toString());
+        String beratStr = txtBerat.getText().trim();
+        String tinggiStr = txtTinggi.getText().trim();
+
+        if (beratStr.isEmpty() || tinggiStr.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Isi semua kolom!", "Pesan", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        double berat, tinggiCm;
+        try {
+            berat = Double.parseDouble(beratStr);
+            tinggiCm = Double.parseDouble(tinggiStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Masukkan angka saja!", "Pesan", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Hitung Berat Ideal & Status
+        double tinggiM = tinggiCm / 100;
+        double bmi = berat / (tinggiM * tinggiM);
+        double beratIdeal = 22 * (tinggiM * tinggiM); // Rumus standar
+
+        String status;
+        if (bmi < 18.5) status = "Kurus";
+        else if (bmi < 25) status = "Berat Badan Ideal";
+        else if (bmi < 30) status = "Berlebih";
+        else status = "Obesitas";
+
+        String rekomendasi = "";
+        if(status.equals("Kurus")) rekomendasi = "Perbanyak asupan gizi dan makan teratur";
+        else if(status.equals("Berat Badan Ideal")) rekomendasi = "Pertahankan pola makan dan gaya hidup sehat";
+        else if(status.equals("Berlebih")) rekomendasi = "Kurangi gula/lemak dan rajin berolahraga";
+        else rekomendasi = "Konsultasi dengan dokter untuk program penurunan berat badan";
+
+        try {
+            Connection conn = Koneksi.bukaKoneksi();
+            // Sesuai kolom yang ada di DB
+            String sql = "UPDATE riwayat_berat SET berat=?, tinggi=?, status=?, berat_ideal=?, rekomendasi=? WHERE id=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setDouble(1, berat);
+            ps.setDouble(2, tinggiCm);
+            ps.setString(3, status);
+            ps.setDouble(4, beratIdeal);
+            ps.setString(5, rekomendasi);
+            ps.setInt(6, id);
+
+            ps.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Data berhasil diubah!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+
+            tampilkanData();
+            bersihkanForm();
+            conn.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        int barisTerpilih = riwayat_berat.getSelectedRow();
+        if (barisTerpilih == -1) {
+            JOptionPane.showMessageDialog(null, "Pilih data dulu!", "Pesan", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int konfirmasi = JOptionPane.showConfirmDialog(null, "Yakin hapus data ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (konfirmasi != JOptionPane.YES_OPTION) return;
+
+        int id = Integer.parseInt(riwayat_berat.getValueAt(barisTerpilih, 0).toString());
+
+        try {
+            Connection conn = Koneksi.bukaKoneksi();
+            String sql = "DELETE FROM riwayat_berat WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Data berhasil dihapus!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+
+            tampilkanData();
+            bersihkanForm();
+            conn.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
+        // TODO add your handling code here:
+        new CekBeratBadan().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnKembaliActionPerformed
 
     /**
      * @param args the command line arguments
@@ -82,8 +303,16 @@ public class RiwayatCekBB extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnKembali;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JLabel lblBerat;
+    private javax.swing.JLabel lblJudul;
+    private javax.swing.JLabel lblTinggi;
+    private javax.swing.JTable riwayat_berat;
+    private javax.swing.JTextField txtBerat;
+    private javax.swing.JTextField txtTinggi;
     // End of variables declaration//GEN-END:variables
 }

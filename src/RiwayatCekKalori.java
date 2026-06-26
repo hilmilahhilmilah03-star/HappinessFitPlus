@@ -5,10 +5,19 @@
 
 /**
  *
- * @author Acer
+ * @author Hilmi, Faizah, dan Desta
  */
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+import java.sql.*;
+
+
 public class RiwayatCekKalori extends javax.swing.JFrame {
-    
+    private Connection conn;
+    private PreparedStatement ps;
+    private ResultSet rs;
+    private DefaultTableModel model;
+    private int id;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RiwayatCekKalori.class.getName());
 
     /**
@@ -16,7 +25,38 @@ public class RiwayatCekKalori extends javax.swing.JFrame {
      */
     public RiwayatCekKalori() {
         initComponents();
+        setLocationRelativeTo(null);
+        
+        model = (DefaultTableModel)riwayat_kalori.getModel();
+        tampilkanData();
     }
+    
+    private void tampilkanData() {
+    model.setRowCount(0);
+
+    try {
+        conn = Koneksi.bukaKoneksi();
+
+        String sql = "SELECT * FROM riwayat_kalori";
+        ps = conn.prepareStatement(sql);
+        rs = ps.executeQuery();
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getInt("id"),
+                rs.getInt("usia"),
+                rs.getString("jenis_kelamin"),
+                rs.getDouble("tinggi"),
+                rs.getDouble("berat"),
+                rs.getString("aktivitas"),
+                rs.getInt("kebutuhan_kalori")
+            });
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage());
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,20 +68,21 @@ public class RiwayatCekKalori extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        riwayat_kalori = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        lblUsia = new javax.swing.JLabel();
+        txtUsia = new javax.swing.JTextField();
+        comJenisKelamin = new javax.swing.JComboBox<>();
+        lblKelamin = new javax.swing.JLabel();
+        lblAktivitas = new javax.swing.JLabel();
+        comAktivitas = new javax.swing.JComboBox<>();
+        lblTinggi = new javax.swing.JLabel();
+        txtTinggi = new javax.swing.JTextField();
+        lblBerat = new javax.swing.JLabel();
+        txtBerat = new javax.swing.JTextField();
+        btnEdit = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnKembali = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -49,81 +90,95 @@ public class RiwayatCekKalori extends javax.swing.JFrame {
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 204));
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 204));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        riwayat_kalori.setBackground(new java.awt.Color(255, 255, 204));
+        riwayat_kalori.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Usia", "Jenis Kelamin", "Aktivitas", "Tinggi Badan", "Berat Badan", "Keterangan"
+                "ID", "Usia", "Jenis Kelamin", "Tinggi Badan", "Berat Badan", "Aktivitas", "Kebutuhan Kalori"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        jTable1.setOpaque(false);
-        jScrollPane1.setViewportView(jTable1);
+        riwayat_kalori.setOpaque(false);
+        riwayat_kalori.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                riwayat_kaloriMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(riwayat_kalori);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, 610, 290));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 630, 290));
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 1, 45)); // NOI18N
         jLabel2.setText("Riwayat Cek Kebutuhan Kalori");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 30, -1, -1));
 
-        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jLabel3.setText("Usia");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 200, 40, -1));
+        lblUsia.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        lblUsia.setText("Usia");
+        getContentPane().add(lblUsia, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 200, 40, -1));
 
-        jTextField1.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 230, -1, 30));
+        txtUsia.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        getContentPane().add(txtUsia, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 230, 130, 30));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Wanita", "Laki-laki", " " }));
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 310, 130, 30));
+        comJenisKelamin.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Wanita", "Laki-laki", " " }));
+        getContentPane().add(comJenisKelamin, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 310, 130, 30));
 
-        jLabel4.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jLabel4.setText("Jenis Kelamin");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 280, 130, -1));
+        lblKelamin.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        lblKelamin.setText("Jenis Kelamin");
+        getContentPane().add(lblKelamin, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 280, 130, -1));
 
-        jLabel5.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jLabel5.setText("Aktivitas");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 350, -1, -1));
+        lblAktivitas.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        lblAktivitas.setText("Aktivitas");
+        getContentPane().add(lblAktivitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 350, -1, -1));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ringan", "Sedang", "Berat", " " }));
-        getContentPane().add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 380, 90, 30));
+        comAktivitas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ringan", "Sedang", "Berat", " " }));
+        getContentPane().add(comAktivitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 380, 90, 30));
 
-        jLabel6.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jLabel6.setText("Tinggi Badan");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 200, -1, -1));
+        lblTinggi.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        lblTinggi.setText("Tinggi Badan");
+        getContentPane().add(lblTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 200, -1, -1));
 
-        jTextField2.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 230, 120, 30));
+        txtTinggi.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        getContentPane().add(txtTinggi, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 230, 120, 30));
 
-        jLabel7.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jLabel7.setText("Berat Badan");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 280, -1, -1));
+        lblBerat.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        lblBerat.setText("Berat Badan");
+        getContentPane().add(lblBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 280, -1, -1));
 
-        jTextField3.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 310, 110, 30));
+        txtBerat.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        getContentPane().add(txtBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 310, 110, 30));
 
-        jButton1.setBackground(new java.awt.Color(0, 204, 51));
-        jButton1.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Edit");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 370, 120, 30));
+        btnEdit.setBackground(new java.awt.Color(0, 204, 51));
+        btnEdit.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(255, 255, 255));
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(this::btnEditActionPerformed);
+        getContentPane().add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 370, 120, 30));
 
-        jButton2.setBackground(new java.awt.Color(204, 51, 0));
-        jButton2.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Delete");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 420, 120, 30));
+        btnDelete.setBackground(new java.awt.Color(204, 51, 0));
+        btnDelete.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(this::btnDeleteActionPerformed);
+        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 420, 120, 30));
+
+        btnKembali.setBackground(new java.awt.Color(153, 0, 153));
+        btnKembali.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnKembali.setForeground(new java.awt.Color(255, 255, 255));
+        btnKembali.setText("Back");
+        btnKembali.addActionListener(this::btnKembaliActionPerformed);
+        getContentPane().add(btnKembali, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 520, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgKalori1.png"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -131,6 +186,108 @@ public class RiwayatCekKalori extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
+        // TODO add your handling code here:
+        new CekKalori().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnKembaliActionPerformed
+
+    private void riwayat_kaloriMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_riwayat_kaloriMouseClicked
+        // TODO add your handling code here:
+        int baris = riwayat_kalori.getSelectedRow();
+
+        id = Integer.parseInt(model.getValueAt(baris,0).toString());
+
+        txtUsia.setText(model.getValueAt(baris,1).toString());
+        comJenisKelamin.setSelectedItem(model.getValueAt(baris,2).toString());
+        txtTinggi.setText(model.getValueAt(baris,3).toString());
+        txtBerat.setText(model.getValueAt(baris,4).toString());
+        comAktivitas.setSelectedItem(model.getValueAt(baris,5).toString());
+    }//GEN-LAST:event_riwayat_kaloriMouseClicked
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+        try {
+
+        int usia = Integer.parseInt(txtUsia.getText());
+        String jenisKelamin = comJenisKelamin.getSelectedItem().toString();
+        double tinggi = Double.parseDouble(txtTinggi.getText());
+        double berat = Double.parseDouble(txtBerat.getText());
+        String aktivitas = comAktivitas.getSelectedItem().toString();
+
+        double bmr;
+        double kebutuhanKalori;
+
+        if (jenisKelamin.equals("Laki-laki")) {
+            bmr = (10 * berat) + (6.25 * tinggi) - (5 * usia) + 5;
+        } else {
+            bmr = (10 * berat) + (6.25 * tinggi) - (5 * usia) - 161;
+        }
+         if (aktivitas.equals("Ringan")) {
+            kebutuhanKalori = bmr * 1.375;
+        } else if (aktivitas.equals("Sedang")) {
+            kebutuhanKalori = bmr * 1.55;
+        } else {
+            kebutuhanKalori = bmr * 1.725;
+        }
+
+        conn = Koneksi.bukaKoneksi();
+
+        String sql = "UPDATE riwayat_kalori SET usia=?, jenis_kelamin=?, tinggi=?, berat=?, aktivitas=?, kebutuhan_kalori=? WHERE id=?";
+
+        ps = conn.prepareStatement(sql);
+
+        ps.setInt(1, usia);
+        ps.setString(2, jenisKelamin);
+        ps.setDouble(3, tinggi);
+        ps.setDouble(4, berat);
+        ps.setString(5, aktivitas);
+        ps.setDouble(6, kebutuhanKalori);
+        ps.setInt(7, id);
+
+        ps.executeUpdate();
+         JOptionPane.showMessageDialog(null, "Data berhasil diubah");
+
+        tampilkanData();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        try {
+
+        int pilih = JOptionPane.showConfirmDialog(
+                null,
+                "Yakin ingin menghapus data?",
+                "Konfirmasi",
+                JOptionPane.YES_NO_OPTION);
+
+        if (pilih == JOptionPane.YES_OPTION) {
+
+            conn = Koneksi.bukaKoneksi();
+
+            String sql = "DELETE FROM riwayat_kalori WHERE id=?";
+
+            ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
+
+            tampilkanData();
+
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage());
+    }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -158,21 +315,22 @@ public class RiwayatCekKalori extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnKembali;
+    private javax.swing.JComboBox<String> comAktivitas;
+    private javax.swing.JComboBox<String> comJenisKelamin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JLabel lblAktivitas;
+    private javax.swing.JLabel lblBerat;
+    private javax.swing.JLabel lblKelamin;
+    private javax.swing.JLabel lblTinggi;
+    private javax.swing.JLabel lblUsia;
+    private javax.swing.JTable riwayat_kalori;
+    private javax.swing.JTextField txtBerat;
+    private javax.swing.JTextField txtTinggi;
+    private javax.swing.JTextField txtUsia;
     // End of variables declaration//GEN-END:variables
 }

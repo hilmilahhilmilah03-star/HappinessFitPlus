@@ -15,14 +15,14 @@ public class Koneksi {
       
        public static Connection bukaKoneksi() {
         try {
-            // PENTING: Nama database "db_fitplus" sesuai yang kamu buat!
+            
             String url = "jdbc:mysql://localhost:3306/db_fitplus";
             String user = "root";      // Standar XAMPP
             String pass = "";          // Standar XAMPP (KOSONG)
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             koneksi = DriverManager.getConnection(url, user, pass);
-            // JOptionPane.showMessageDialog(null, "Koneksi Berhasil!");
+            
             return koneksi;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Koneksi Gagal: " + e.getMessage());
@@ -30,7 +30,6 @@ public class Koneksi {
         return null;
     }
 
-    // Tes koneksi (Jalankan ini sekali saja buat cek)
     public static void main(String[] args) {
         bukaKoneksi();
     }

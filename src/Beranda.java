@@ -7,6 +7,7 @@
  *
  * @author Hilmi, Faizah, dan Desta
  */
+import javax.swing.JOptionPane;
 public class Beranda extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Beranda.class.getName());
@@ -43,6 +44,7 @@ public class Beranda extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         btnKalori = new javax.swing.JButton();
+        btnLogout = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -111,6 +113,13 @@ public class Beranda extends javax.swing.JFrame {
         btnKalori.addActionListener(this::btnKaloriActionPerformed);
         getContentPane().add(btnKalori, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 340, 110, 30));
 
+        btnLogout.setBackground(new java.awt.Color(204, 0, 51));
+        btnLogout.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnLogout.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogout.setText("LOGOUT");
+        btnLogout.addActionListener(this::btnLogoutActionPerformed);
+        getContentPane().add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 30, -1, -1));
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgBeranda.png"))); // NOI18N
         jLabel1.setText("\n");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1060, -1));
@@ -132,6 +141,22 @@ public class Beranda extends javax.swing.JFrame {
         // TODO add your handling code here:
         new CekAir().setVisible(true);
     }//GEN-LAST:event_btnAirActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // TODO add your handling code here:
+        // Konfirmasi sebelum keluar
+    int pilih = JOptionPane.showConfirmDialog(null, 
+        "Yakin ingin keluar dari akun ini?", 
+        "Konfirmasi Logout", 
+        JOptionPane.YES_NO_OPTION);
+    
+    if (pilih == JOptionPane.YES_OPTION) {
+        // Tutup halaman Beranda
+        this.dispose();
+        // Buka halaman Login/Register (sesuai nama filenya)
+        new LoginForm().setVisible(true); // Ganti dengan nama file Login kamu
+    }
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -162,6 +187,7 @@ public class Beranda extends javax.swing.JFrame {
     private javax.swing.JButton btnAir;
     private javax.swing.JButton btnBerat;
     private javax.swing.JButton btnKalori;
+    private javax.swing.JButton btnLogout;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

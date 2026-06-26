@@ -52,6 +52,8 @@ public class CekAir extends javax.swing.JFrame implements PerhitunganKesehatan{
         btnCek = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         lblHasil = new javax.swing.JLabel();
+        btnRiwayat = new javax.swing.JButton();
+        btnKembali = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -97,6 +99,20 @@ public class CekAir extends javax.swing.JFrame implements PerhitunganKesehatan{
         lblHasil.setForeground(new java.awt.Color(255, 255, 255));
         lblHasil.setOpaque(true);
         getContentPane().add(lblHasil, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 330, 770, 160));
+
+        btnRiwayat.setBackground(new java.awt.Color(153, 0, 153));
+        btnRiwayat.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnRiwayat.setForeground(new java.awt.Color(255, 255, 255));
+        btnRiwayat.setText("Riwayat");
+        btnRiwayat.addActionListener(this::btnRiwayatActionPerformed);
+        getContentPane().add(btnRiwayat, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, -1, -1));
+
+        btnKembali.setBackground(new java.awt.Color(204, 0, 204));
+        btnKembali.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnKembali.setForeground(new java.awt.Color(255, 255, 255));
+        btnKembali.setText("Beranda");
+        btnKembali.addActionListener(this::btnKembaliActionPerformed);
+        getContentPane().add(btnKembali, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgAir1.png"))); // NOI18N
         jLabel1.setText("\n");
@@ -182,6 +198,18 @@ public class CekAir extends javax.swing.JFrame implements PerhitunganKesehatan{
         }
     }//GEN-LAST:event_btnCekActionPerformed
 
+    private void btnRiwayatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRiwayatActionPerformed
+        // TODO add your handling code here:
+        new RiwayatCekAir().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnRiwayatActionPerformed
+
+    private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
+        // TODO add your handling code here:
+        new Beranda().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnKembaliActionPerformed
+
     @Override
     public double hitungNilai() {
         return kebutuhanMl;
@@ -228,7 +256,9 @@ public class CekAir extends javax.swing.JFrame implements PerhitunganKesehatan{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCek;
+    private javax.swing.JButton btnKembali;
     private javax.swing.JButton btnReset;
+    private javax.swing.JButton btnRiwayat;
     private javax.swing.JComboBox<String> comAktivitas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;

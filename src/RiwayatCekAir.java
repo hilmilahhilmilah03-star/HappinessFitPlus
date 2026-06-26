@@ -5,8 +5,11 @@
 
 /**
  *
- * @author Acer
+ * @author Hilmi, Faizah, dan Desta
  */
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.*;
 public class RiwayatCekAir extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RiwayatCekAir.class.getName());
@@ -16,8 +19,47 @@ public class RiwayatCekAir extends javax.swing.JFrame {
      */
     public RiwayatCekAir() {
         initComponents();
+        setTitle("Riwayat Cek Kebutuhan Air");
+        setLocationRelativeTo(null);
+        riwayat_air.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting() && riwayat_air.getSelectedRow() != -1) {
+                int baris = riwayat_air.getSelectedRow();
+                txtBerat.setText(riwayat_air.getValueAt(baris, 1).toString());
+                comAktivitas.setSelectedItem(riwayat_air.getValueAt(baris, 2).toString());
+            }
+        });
+        tampilkanData();
     }
+    
+    private void tampilkanData() {
+        DefaultTableModel model = (DefaultTableModel) riwayat_air.getModel();
+        model.setRowCount(0);
 
+        try {
+            Connection conn = Koneksi.bukaKoneksi();
+            String sql = "SELECT * FROM riwayat_air ORDER BY id ASC";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getInt("id"),
+                    rs.getDouble("berat"),
+                    rs.getString("aktivitas"),
+                    rs.getString("kebutuhan_air"),
+                    rs.getTimestamp("tanggal")
+                });
+            }
+            conn.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Gagal memuat data: " + ex.getMessage());
+        }
+    }
+    
+     private void bersihkanForm() {
+        txtBerat.setText("");
+        comAktivitas.setSelectedIndex(0);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,71 +70,82 @@ public class RiwayatCekAir extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        riwayat_air = new javax.swing.JTable();
+        lblBerat = new javax.swing.JLabel();
+        txtBerat = new javax.swing.JTextField();
+        lblAktivitas = new javax.swing.JLabel();
+        comAktivitas = new javax.swing.JComboBox<>();
+        btnEdit = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        btnKembali = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 204));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        riwayat_air.setBackground(new java.awt.Color(255, 255, 204));
+        riwayat_air.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Berat Badan", "Aktivitas", "Keterangan"
+                "ID", "Berat Badan", "Aktivitas", "Kebutuhan Air"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(riwayat_air);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 200, 590, 270));
 
-        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jLabel2.setText("Berat Badan");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 200, 110, -1));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 230, 110, 30));
+        lblBerat.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        lblBerat.setText("Berat Badan");
+        getContentPane().add(lblBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 200, 110, -1));
+        getContentPane().add(txtBerat, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 230, 110, 30));
 
-        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jLabel3.setText("Aktivitas");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 280, 80, 20));
+        lblAktivitas.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        lblAktivitas.setText("Aktivitas");
+        getContentPane().add(lblAktivitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 280, 80, 20));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ringan", "Sedang", "Berat" }));
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 310, 110, 30));
+        comAktivitas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ringan", "Sedang", "Berat" }));
+        getContentPane().add(comAktivitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 310, 110, 30));
 
-        jButton1.setBackground(new java.awt.Color(0, 204, 51));
-        jButton1.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Edit");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 370, 110, 30));
+        btnEdit.setBackground(new java.awt.Color(0, 204, 51));
+        btnEdit.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(255, 255, 255));
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(this::btnEditActionPerformed);
+        getContentPane().add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 370, 110, 30));
 
-        jButton2.setBackground(new java.awt.Color(204, 51, 0));
-        jButton2.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Delete");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 420, 110, 30));
+        btnDelete.setBackground(new java.awt.Color(204, 51, 0));
+        btnDelete.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(this::btnDeleteActionPerformed);
+        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 420, 110, 30));
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 45)); // NOI18N
         jLabel4.setText("Riwayat Cek Kebutuhan Air");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 30, 600, -1));
+
+        btnKembali.setBackground(new java.awt.Color(153, 0, 153));
+        btnKembali.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnKembali.setForeground(new java.awt.Color(255, 255, 255));
+        btnKembali.setText("Back");
+        btnKembali.addActionListener(this::btnKembaliActionPerformed);
+        getContentPane().add(btnKembali, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 520, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background/bgAir1.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1060, 570));
@@ -100,9 +153,103 @@ public class RiwayatCekAir extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        int barisTerpilih = riwayat_air.getSelectedRow();
+
+        if (barisTerpilih == -1) {
+            JOptionPane.showMessageDialog(null, "Pilih data yang mau diubah dulu!", "Pesan", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int id = Integer.parseInt(riwayat_air.getValueAt(barisTerpilih, 0).toString());
+        String beratStr = txtBerat.getText().trim();
+        String aktivitas = comAktivitas.getSelectedItem().toString();
+
+        if (beratStr.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Berat harus diisi!", "Pesan", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+         double berat;
+        try {
+            berat = Double.parseDouble(beratStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Berat harus berupa angka!", "Pesan", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Hitung ulang kebutuhan air otomatis
+        double kebutuhanBaru;
+        if (aktivitas.equals("Ringan")) {
+            kebutuhanBaru = berat * 35;
+        } else if (aktivitas.equals("Sedang")) {
+            kebutuhanBaru = berat * 40;
+        } else {
+            kebutuhanBaru = berat * 45;
+        }
+
+        try {
+            Connection conn = Koneksi.bukaKoneksi();
+            String sql = "UPDATE riwayat_air SET berat = ?, aktivitas = ?, kebutuhan_air = ? WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setDouble(1, berat);
+            ps.setString(2, aktivitas);
+            ps.setDouble(3, kebutuhanBaru);
+            ps.setInt(4, id);
+
+            int hasil = ps.executeUpdate();
+
+            System.out.println("Data yang diupdate: " + hasil);
+            JOptionPane.showMessageDialog(null, "Data berhasil diubah!", "Pesan", JOptionPane.INFORMATION_MESSAGE);
+
+            tampilkanData();
+            bersihkanForm();
+
+            conn.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        int barisTerpilih = riwayat_air.getSelectedRow();
+
+        if (barisTerpilih == -1) {
+            JOptionPane.showMessageDialog(null, "Pilih data yang mau dihapus dulu!", "Pesan", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int konfirmasi = JOptionPane.showConfirmDialog(null, "Yakin mau hapus data ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (konfirmasi != JOptionPane.YES_OPTION) {
+            return;
+        }
+         int id = Integer.parseInt(riwayat_air.getValueAt(barisTerpilih, 0).toString());
+
+        try {
+            Connection conn = Koneksi.bukaKoneksi();
+            String sql = "DELETE FROM riwayat_air WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Data berhasil dihapus!", "Pesan", JOptionPane.INFORMATION_MESSAGE);
+
+            tampilkanData();
+            bersihkanForm();
+
+            conn.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
+        // TODO add your handling code here:
+        new CekAir().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnKembaliActionPerformed
 
     /**
      * @param args the command line arguments
@@ -130,15 +277,16 @@ public class RiwayatCekAir extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnKembali;
+    private javax.swing.JComboBox<String> comAktivitas;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblAktivitas;
+    private javax.swing.JLabel lblBerat;
+    private javax.swing.JTable riwayat_air;
+    private javax.swing.JTextField txtBerat;
     // End of variables declaration//GEN-END:variables
 }
